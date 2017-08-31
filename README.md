@@ -14,8 +14,9 @@ Available variables are listed below, along with default values (see `defaults/m
 
     kibana_repo_version: 4.x
     #kibana_repo_version: 5.x
+	#kibana_version: 5.5.2
 
-The version of kibana to install (major and minor only).
+The version of kibana to install is latest by default, choose version according to kibana_repo_version.
 
     kibana_server_port: 5601
     kibana_server_host: "0.0.0.0"
