@@ -12,11 +12,24 @@ None.
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-    kibana_repo_version: 4.x
-    #kibana_repo_version: 5.x
-	#kibana_version: 5.5.2
+    kibana_version: "6.x"
 
-The version of kibana to install is latest by default, choose version according to kibana_repo_version.
+The version of kibana to install.
+
+    kibana_package: kibana
+    kibana_package_state: present
+
+The specific package to be installed. You can specify a version of the package using the correct syntax for your platform and package manager by changing the package name. You can also control the package state (e.g. `present`, `absent`, or `latest`).
+
+    kibana_service_state: started
+    kibana_service_enabled: true
+
+Controls whether the `kibana` service is started and enabled on system boot.
+
+    kibana_config_template: kibana.yml.j2
+    kibana_config_file_path: /etc/kibana/kibana.yml
+
+The template to use for the Kibana config file, and the path to which the config file will be written.
 
     kibana_server_port: 5601
     kibana_server_host: "0.0.0.0"
@@ -26,6 +39,11 @@ The FQDN or IP address and port Kibana should use.
     kibana_elasticsearch_url: "http://localhost:9200"
 
 The URL (including port) over which Kibana will connect to Elasticsearch.
+
+    kibana_elasticsearch_username: ""
+    kibana_elasticsearch_password: ""
+
+If Elasticsearch is protected by HTTP basic authentication, set the username and password so Kibana can connect.
 
 ## Dependencies
 
