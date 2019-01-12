@@ -1,8 +1,5 @@
 ---
 
-- name: Include version-specific variables
-  include_vars: "kibana-{{ kibana_repo_version }}.yml"
-
 - include: setup-RedHat.yml
   when: ansible_os_family == 'RedHat'
 
