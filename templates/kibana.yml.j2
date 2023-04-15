@@ -100,7 +100,11 @@ elasticsearch.requestTimeout: {{ kibana_elasticsearch_requestTimeout }}
 #pid.file: /var/run/kibana.pid
 
 # Enables you specify a file where Kibana stores log output.
+{% if kibana_elasticsearch_logging_dest | bool %}
+logging.dest: stdout
+{% else %}
 #logging.dest: stdout
+{% endif %}
 
 # Set the value of this setting to true to suppress all logging output.
 #logging.silent: false
