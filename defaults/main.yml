@@ -1,5 +1,5 @@
 ---
-kibana_version: "6.x"
+kibana_version: "8.x"
 
 kibana_package: kibana
 kibana_package_state: present
@@ -19,5 +19,6 @@ kibana_elasticsearch_password: ""
 kibana_elasticsearch_requestTimeout: 30000
 # kibana_logging_dest: stdout
 kibana_logging_dest: /var/log/kibana/kibana.log
+kibana_extra_options: ''
 
 kibana_elasticsearch_logging_dest: false

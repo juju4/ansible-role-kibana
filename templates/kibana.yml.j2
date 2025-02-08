@@ -1,3 +1,5 @@
+{{ ansible_managed | comment }}
+
 # Kibana is served by a back end server. This setting specifies the port to use.
 server.port: {{ kibana_server_port }}
 
@@ -25,7 +27,11 @@ server.host: "{{ kibana_server_host }}"
 #server.name: "your-hostname"
 
 # The URL of the Elasticsearch instance to use for all your queries.
-elasticsearch.url: {{ kibana_elasticsearch_url }}
+{% if kibana_version == "6.x" %}
+elasticsearch.url: "{{ kibana_elasticsearch_url }}"
+{% else %}
+elasticsearch.hosts: [ "{{ kibana_elasticsearch_url }}" ]
+{% endif %}
 
 # When this setting's value is true Kibana uses the hostname specified in the server.host
 # setting. When the value of this setting is false, Kibana uses the hostname of the host
@@ -99,6 +105,7 @@ elasticsearch.requestTimeout: {{ kibana_elasticsearch_requestTimeout }}
 # Specifies the path where Kibana creates the process ID file.
 #pid.file: /var/run/kibana.pid
 
+{% if kibana_version == "6.x" %}
 # Enables you specify a file where Kibana stores log output.
 {% if kibana_elasticsearch_logging_dest | bool %}
 logging.dest: stdout
@@ -116,6 +123,26 @@ logging.dest: {{ kibana_logging_dest }}
 # Set the value of this setting to true to log all events, including system usage information
 # and all requests.
 #logging.verbose: false
+{% else %}
+{# elastic 7-8.x #}
+# https://www.elastic.co/guide/en/kibana/current/logging-configuration.html
+logging:
+  appenders:
+    file:
+      type: file
+      fileName: {{ kibana_logging_dest }}
+      layout:
+        type: json
+    censor:
+      type: rewrite
+      appenders: [file]
+      policy:
+        type: meta
+        mode: update
+        properties:
+          - path: "http.request.headers.cookie"
+            value: "[REDACTED]"
+{% endif %}
 
 # Set the interval in milliseconds to sample system and process performance
 # metrics. Minimum is 100ms. Defaults to 5000.
@@ -124,3 +151,5 @@ logging.dest: {{ kibana_logging_dest }}
 # The default locale. This locale can be used in certain circumstances to substitute any missing
 # translations.
 #i18n.defaultLocale: "en"
+
+{{ kibana_extra_options }}
