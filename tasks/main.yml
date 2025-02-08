@@ -1,9 +1,9 @@
 ---
 
-- include: setup-RedHat.yml
+- ansible.builtin.import_tasks: setup-RedHat.yml
   when: ansible_os_family == 'RedHat'
 
-- include: setup-Debian.yml
+- ansible.builtin.import_tasks: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
 - name: Install Kibana.
